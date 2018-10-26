@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
+using System;
 
 namespace QuestionnaireCours
 {
@@ -45,18 +46,63 @@ namespace QuestionnaireCours
 
         public List<GenericNode> RechercheSolutionAEtoile(GenericNode N0, DijkstraAForm form)
         {
+            int ite = 1;
             L_Ouverts = new List<GenericNode>();
             L_Fermes = new List<GenericNode>();
             // Le noeud passé en paramètre est supposé être le noeud initial
             GenericNode N = N0;
             L_Ouverts.Add(N0);
-            int ite = 1;
-
-
-
 
             // tant que le noeud n'est pas terminal et que ouverts n'est pas vide
-            while ( (L_Ouverts.Count != 0 && N.EndState() == false) || (ite <= form.GetIterationInput()))
+            while (L_Ouverts.Count != 0 && N.EndState() == false)
+            {
+                ite++;
+                // Le meilleur noeud des ouverts est supposé placé en tête de liste
+                // On le place dans les fermés
+                L_Ouverts.Remove(N);
+                L_Fermes.Add(N);
+
+                // Il faut trouver les noeuds successeurs de N
+                this.MAJSuccesseurs(N);
+                // Inutile de retrier car les insertions ont été faites en respectant l'ordre
+
+                // On prend le meilleur, donc celui en position 0, pour continuer à explorer les états
+                // A condition qu'il existe bien sûr
+                if (L_Ouverts.Count > 0) { N = L_Ouverts[0]; }
+                else { N = null; }
+            }
+            form.SetIterationInputGoal(++ite);
+
+            // A* terminé
+            // On retourne le chemin qui va du noeud initial au noeud final sous forme de liste
+            // Le chemin est retrouvé en partant du noeud final et en accédant aux parents de manière
+            // itérative jusqu'à ce qu'on tombe sur le noeud initial
+            List<GenericNode> _LN = new List<GenericNode>();
+            if (N != null)
+            {
+                _LN.Add(N);
+
+                while (N != N0)
+                {
+                    N = N.GetNoeud_Parent();
+                    _LN.Insert(0, N);  // On insère en position 1
+                }
+            }
+            return _LN;
+        }
+
+        public bool RechercheSolutionAEtoileUserInput(GenericNode N0, DijkstraAForm form)
+        {
+            int ite = 2;
+            form.IncrementIterationInput();
+            L_Ouverts = new List<GenericNode>();
+            L_Fermes = new List<GenericNode>();
+            // Le noeud passé en paramètre est supposé être le noeud initial
+            GenericNode N = N0;
+            L_Ouverts.Add(N0);
+
+            // tant que le noeud n'est pas terminal et que ouverts n'est pas vide
+            while ( (L_Ouverts.Count != 0 && N.EndState() == false) && (ite < form.GetIterationInput() ) )
             {
                 // Le meilleur noeud des ouverts est supposé placé en tête de liste
                 // On le place dans les fermés
@@ -86,16 +132,7 @@ namespace QuestionnaireCours
                 }
             }
 
-            ite++;
-            if (form.GetIterationInputGoal() == -1) { form.SetIterationInputGoal(ite); }
-
-            // A* terminé
-            // On retourne le chemin qui va du noeud initial au noeud final sous forme de liste
-            // Le chemin est retrouvé en partant du noeud final et en accédant aux parents de manière
-            // itérative jusqu'à ce qu'on tombe sur le noeud initial
             List<GenericNode> _LN = new List<GenericNode>();
-
-
             if (N != null)
             {
                 _LN.Add(N);
@@ -107,9 +144,15 @@ namespace QuestionnaireCours
                 }
             }
 
-            //foreach (GenericNode el in _LN) { MessageBox.Show(el.ToString()); }
+            ///VERIF abdcfe dans fermés
 
-            return _LN;
+            if (form.GetIterationInput() >= 6) { foreach (GenericNode ele in _LN) { MessageBox.Show(ele.ToString()); } }
+
+            string txt = "";
+            foreach (GenericNode el in _LN) { string value = el.ToString() ; txt = txt + ((char)((Convert.ToInt32(el.ToString()))+65)).ToString() + " "; }
+            MessageBox.Show("input ligne n°" + form.GetIterationInput() + " sur " + form.GetIterationInputGoal() + "\n\n" + txt);
+
+            return true;
         }
 
         private void MAJSuccesseurs(GenericNode N)

@@ -26,6 +26,7 @@ namespace QuestionnaireCours
             InitializeComponent();
             ReadGraphFile();
             DijkstraASolverIterationDefiner();
+            tb_OpenedPrevious.Text = "A";
         }
 
         private void ReadGraphFile ()
@@ -94,14 +95,14 @@ namespace QuestionnaireCours
         private void bt_ClosedOpenRead_Click(object sender, EventArgs e)
         {
             //On vérifie que l'input est étudiable
-            while (!TextboxInputWorkable())
+            if (!TextboxInputWorkable())
             {
                 MessageBox.Show("Vous semblez avoir mal rempli vos cases.\n\nRappel :\n - Une case ne sera jamais vide !\n - Les lettres doivent être en majuscule.\n - Si vous avez plusieurs lettres à rentrer, vous devez les séparer par \", \" ou \" \".");
+                return;
             }
             //On vérifie que l'input est juste
             if (TextboxInputCorrect()) //il faudra lancer le DijkstraASolver() ici.
             {
-                iteInput++;
                 tb_ClosedPrevious.Text = tb_ClosedRead.Text;
                 tb_OpenedPrevious.Text = tb_OpenedRead.Text;
                 if (iteInput == iteInputGoal) { MessageBox.Show("Dijkstra terminé !"); }
@@ -141,16 +142,12 @@ namespace QuestionnaireCours
             string[] txtFElements = tb_ClosedRead.Text.Split(this.sep, StringSplitOptions.None);
             string[] txtOElements = tb_OpenedRead.Text.Split(this.sep, StringSplitOptions.None);
 
-            return true;
-        }
-
-        private void DijkstraASolver()
-        {
             numInitial = 0; numFinal = 4;
             SearchTree g = new SearchTree();
             SpecificNode N0 = new SpecificNode();
             N0.numero = numInitial;
-            List<GenericNode> solution = g.RechercheSolutionAEtoile(N0, this); //CHECK INPUT ICI
+
+            return g.RechercheSolutionAEtoileUserInput(N0, this); //CHECK INPUT ICI
         }
 
         private void DijkstraASolverIterationDefiner()
@@ -177,6 +174,7 @@ namespace QuestionnaireCours
         public string GetTbOpenedReadText() { return this.tb_OpenedRead.Text; }
         public string GetTbClosedReadText() { return this.tb_ClosedRead.Text; }
         public int GetIterationInput() { return this.iteInput; }
+        public void IncrementIterationInput() { this.iteInput++; }
         public int GetIterationInputGoal() { return this.iteInputGoal; }
         public void SetIterationInputGoal(int ite) { this.iteInputGoal = ite;}
     }
