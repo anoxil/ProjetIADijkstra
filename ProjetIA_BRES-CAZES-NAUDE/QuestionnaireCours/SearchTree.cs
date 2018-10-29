@@ -91,7 +91,7 @@ namespace QuestionnaireCours
             return _LN;
         }
 
-        public bool RechercheSolutionAEtoileUserInput(GenericNode N0, DijkstraAForm form)
+        public void RechercheLFermesOuvertsAEtoile(GenericNode N0, DijkstraAForm form)
         {
             int ite = 2;
             form.IncrementIterationInput();
@@ -102,7 +102,7 @@ namespace QuestionnaireCours
             L_Ouverts.Add(N0);
 
             // tant que le noeud n'est pas terminal et que ouverts n'est pas vide
-            while ( (L_Ouverts.Count != 0 && N.EndState() == false) && (ite < form.GetIterationInput() ) )
+            while ( (L_Ouverts.Count != 0 && N.EndState() == false) && (ite < form.GetIterationInput()) )
             {
                 // Le meilleur noeud des ouverts est supposé placé en tête de liste
                 // On le place dans les fermés
@@ -113,12 +113,6 @@ namespace QuestionnaireCours
                 this.MAJSuccesseurs(N);
                 // Inutile de retrier car les insertions ont été faites en respectant l'ordre
                 ite++;
-
-
-
-                /*C'EST ICI QU'ON VERIFIE L'INPUT DU USER A L'ITERATION X POUR LES FERMES ET OUVERTS (et une fois sup juste après le while pour la dernière ité)*/
-
-
 
                 // On prend le meilleur, donc celui en position 0, pour continuer à explorer les états
                 // A condition qu'il existe bien sûr
@@ -131,28 +125,9 @@ namespace QuestionnaireCours
                     N = null;
                 }
             }
-
-            List<GenericNode> _LN = new List<GenericNode>();
-            if (N != null)
-            {
-                _LN.Add(N);
-
-                while (N != N0)
-                {
-                    N = N.GetNoeud_Parent();
-                    _LN.Insert(0, N);  // On insère en position 1
-                }
-            }
-
-            ///VERIF abdcfe dans fermés
-
-            if (form.GetIterationInput() >= 6) { foreach (GenericNode ele in _LN) { MessageBox.Show(ele.ToString()); } }
-
-            string txt = "";
-            foreach (GenericNode el in _LN) { string value = el.ToString() ; txt = txt + ((char)((Convert.ToInt32(el.ToString()))+65)).ToString() + " "; }
-            MessageBox.Show("input ligne n°" + form.GetIterationInput() + " sur " + form.GetIterationInputGoal() + "\n\n" + txt);
-
-            return true;
+            L_Fermes.Add(N);
+            L_Ouverts.Remove(N);
+            this.MAJSuccesseurs(N);
         }
 
         private void MAJSuccesseurs(GenericNode N)

@@ -26,7 +26,7 @@ namespace QuestionnaireCours
             InitializeComponent();
             ReadGraphFile();
             DijkstraASolverIterationDefiner();
-            tb_OpenedPrevious.Text = "A";
+            tb_OpenedPrevious.Text = "A"; lbl_IndicationsInput.Text = "Veuillez remplir l'étape 2 de l'algorithme :";
         }
 
         private void ReadGraphFile ()
@@ -101,8 +101,9 @@ namespace QuestionnaireCours
                 return;
             }
             //On vérifie que l'input est juste
-            if (TextboxInputCorrect()) //il faudra lancer le DijkstraASolver() ici.
+            if (TextboxInputCorrect())
             {
+                lbl_Correctness.Text = "Étape " + iteInput + " correcte !";
                 tb_ClosedPrevious.Text = tb_ClosedRead.Text;
                 tb_OpenedPrevious.Text = tb_OpenedRead.Text;
                 if (iteInput == iteInputGoal) { MessageBox.Show("Dijkstra terminé !"); }
@@ -138,21 +139,41 @@ namespace QuestionnaireCours
 
         private bool TextboxInputCorrect ()
         {
-            //dikjstra solver comparé à l'input
+            //dijkstra solver comparé à l'input
             string[] txtFElements = tb_ClosedRead.Text.Split(this.sep, StringSplitOptions.None);
             string[] txtOElements = tb_OpenedRead.Text.Split(this.sep, StringSplitOptions.None);
 
-            numInitial = 0; numFinal = 4;
+            numInitial = 0; numFinal = 1;
             SearchTree g = new SearchTree();
             SpecificNode N0 = new SpecificNode();
             N0.numero = numInitial;
 
-            return g.RechercheSolutionAEtoileUserInput(N0, this); //CHECK INPUT ICI
+            g.RechercheLFermesOuvertsAEtoile(N0, this);
+
+            bool correct = true;
+
+            foreach (GenericNode el in g.L_Fermes)
+            {
+                if (!txtFElements.Contains(el.ToLetter()))
+                {
+                    correct = false;
+                }
+            }
+
+            foreach (GenericNode el in g.L_Ouverts)
+            {
+                if (!txtOElements.Contains(el.ToLetter()))
+                {
+                    correct = false;
+                }
+            }
+
+            return correct;
         }
 
         private void DijkstraASolverIterationDefiner()
         {
-            numInitial = 0; numFinal = 4;
+            numInitial = 0; numFinal = 1;
             SearchTree g = new SearchTree();
             SpecificNode N0 = new SpecificNode();
             N0.numero = numInitial;
@@ -177,5 +198,6 @@ namespace QuestionnaireCours
         public void IncrementIterationInput() { this.iteInput++; }
         public int GetIterationInputGoal() { return this.iteInputGoal; }
         public void SetIterationInputGoal(int ite) { this.iteInputGoal = ite;}
+
     }
 }

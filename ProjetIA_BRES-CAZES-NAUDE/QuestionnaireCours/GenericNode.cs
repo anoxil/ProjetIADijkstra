@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace QuestionnaireCours
 {
@@ -69,13 +70,16 @@ namespace QuestionnaireCours
             TotalCost = GCost + HCost;
         }
 
+        public string ToLetter()
+        {
+            return ((char)(Convert.ToInt32(this.ToString()) + 65)).ToString();
+        }
+
         // Méthodes abstraites, donc à surcharger obligatoirement avec override dans une classe fille
         public abstract bool IsEqual(GenericNode N2);
         public abstract double GetArcCost(GenericNode N2);
         public abstract bool EndState();
         public abstract List<GenericNode> GetListSucc();
         public abstract double CalculeHCost();
-        // On peut aussi penser à surcharger ToString() pour afficher correctement un état
-        // c'est utile pour l'affichage du treenode
     }
 }

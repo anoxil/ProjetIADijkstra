@@ -40,112 +40,164 @@
             this.lbl_OpenedPrevious = new System.Windows.Forms.Label();
             this.lbl_OpenedRead = new System.Windows.Forms.Label();
             this.bt_ClosedOpenRead = new System.Windows.Forms.Button();
+            this.pb_graph = new System.Windows.Forms.PictureBox();
+            this.lbl_Correctness = new System.Windows.Forms.Label();
+            this.lbl_IndicationsInput = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_graph)).BeginInit();
             this.SuspendLayout();
             // 
             // lb_MatriceGraphe
             // 
             this.lb_MatriceGraphe.FormattingEnabled = true;
-            this.lb_MatriceGraphe.Location = new System.Drawing.Point(44, 267);
+            this.lb_MatriceGraphe.ItemHeight = 20;
+            this.lb_MatriceGraphe.Location = new System.Drawing.Point(30, 611);
+            this.lb_MatriceGraphe.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lb_MatriceGraphe.Name = "lb_MatriceGraphe";
-            this.lb_MatriceGraphe.Size = new System.Drawing.Size(154, 316);
+            this.lb_MatriceGraphe.Size = new System.Drawing.Size(190, 224);
             this.lb_MatriceGraphe.TabIndex = 0;
             // 
             // lb_DijkstraSolved
             // 
             this.lb_DijkstraSolved.FormattingEnabled = true;
-            this.lb_DijkstraSolved.Location = new System.Drawing.Point(239, 267);
+            this.lb_DijkstraSolved.ItemHeight = 20;
+            this.lb_DijkstraSolved.Location = new System.Drawing.Point(228, 611);
+            this.lb_DijkstraSolved.Margin = new System.Windows.Forms.Padding(4, 5, 4, 29);
             this.lb_DijkstraSolved.Name = "lb_DijkstraSolved";
-            this.lb_DijkstraSolved.Size = new System.Drawing.Size(154, 316);
+            this.lb_DijkstraSolved.Size = new System.Drawing.Size(196, 224);
             this.lb_DijkstraSolved.TabIndex = 1;
             // 
             // tv_DijkstraSolved
             // 
-            this.tv_DijkstraSolved.Location = new System.Drawing.Point(501, 267);
+            this.tv_DijkstraSolved.Location = new System.Drawing.Point(432, 611);
+            this.tv_DijkstraSolved.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tv_DijkstraSolved.Name = "tv_DijkstraSolved";
-            this.tv_DijkstraSolved.Size = new System.Drawing.Size(264, 316);
+            this.tv_DijkstraSolved.Size = new System.Drawing.Size(288, 224);
             this.tv_DijkstraSolved.TabIndex = 2;
             // 
             // tb_ClosedRead
             // 
-            this.tb_ClosedRead.Location = new System.Drawing.Point(566, 49);
+            this.tb_ClosedRead.Location = new System.Drawing.Point(420, 390);
+            this.tb_ClosedRead.Margin = new System.Windows.Forms.Padding(4, 5, 30, 5);
             this.tb_ClosedRead.Name = "tb_ClosedRead";
-            this.tb_ClosedRead.Size = new System.Drawing.Size(199, 20);
+            this.tb_ClosedRead.Size = new System.Drawing.Size(300, 26);
             this.tb_ClosedRead.TabIndex = 3;
             // 
             // tb_OpenedRead
             // 
-            this.tb_OpenedRead.Location = new System.Drawing.Point(566, 115);
+            this.tb_OpenedRead.Location = new System.Drawing.Point(420, 492);
+            this.tb_OpenedRead.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tb_OpenedRead.Name = "tb_OpenedRead";
-            this.tb_OpenedRead.Size = new System.Drawing.Size(199, 20);
+            this.tb_OpenedRead.Size = new System.Drawing.Size(300, 26);
             this.tb_OpenedRead.TabIndex = 4;
             // 
             // tb_ClosedPrevious
             // 
-            this.tb_ClosedPrevious.Location = new System.Drawing.Point(41, 49);
+            this.tb_ClosedPrevious.Location = new System.Drawing.Point(30, 390);
+            this.tb_ClosedPrevious.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tb_ClosedPrevious.Name = "tb_ClosedPrevious";
             this.tb_ClosedPrevious.ReadOnly = true;
-            this.tb_ClosedPrevious.Size = new System.Drawing.Size(352, 20);
+            this.tb_ClosedPrevious.Size = new System.Drawing.Size(300, 26);
             this.tb_ClosedPrevious.TabIndex = 5;
             // 
             // tb_OpenedPrevious
             // 
-            this.tb_OpenedPrevious.Location = new System.Drawing.Point(41, 115);
+            this.tb_OpenedPrevious.Location = new System.Drawing.Point(30, 492);
+            this.tb_OpenedPrevious.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tb_OpenedPrevious.Name = "tb_OpenedPrevious";
             this.tb_OpenedPrevious.ReadOnly = true;
-            this.tb_OpenedPrevious.Size = new System.Drawing.Size(352, 20);
+            this.tb_OpenedPrevious.Size = new System.Drawing.Size(300, 26);
             this.tb_OpenedPrevious.TabIndex = 6;
             // 
             // lbl_ClosedPrevious
             // 
             this.lbl_ClosedPrevious.AutoSize = true;
-            this.lbl_ClosedPrevious.Location = new System.Drawing.Point(41, 30);
+            this.lbl_ClosedPrevious.Location = new System.Drawing.Point(30, 361);
+            this.lbl_ClosedPrevious.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_ClosedPrevious.Name = "lbl_ClosedPrevious";
-            this.lbl_ClosedPrevious.Size = new System.Drawing.Size(90, 13);
+            this.lbl_ClosedPrevious.Size = new System.Drawing.Size(157, 20);
             this.lbl_ClosedPrevious.TabIndex = 7;
-            this.lbl_ClosedPrevious.Text = "Fermés (previous)";
+            this.lbl_ClosedPrevious.Text = "Fermés (précédents)";
             // 
             // lbl_ClosedRead
             // 
             this.lbl_ClosedRead.AutoSize = true;
-            this.lbl_ClosedRead.Location = new System.Drawing.Point(563, 30);
+            this.lbl_ClosedRead.Location = new System.Drawing.Point(416, 361);
+            this.lbl_ClosedRead.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_ClosedRead.Name = "lbl_ClosedRead";
-            this.lbl_ClosedRead.Size = new System.Drawing.Size(73, 13);
+            this.lbl_ClosedRead.Size = new System.Drawing.Size(63, 20);
             this.lbl_ClosedRead.TabIndex = 8;
-            this.lbl_ClosedRead.Text = "Fermés (input)";
+            this.lbl_ClosedRead.Text = "Fermés";
             // 
             // lbl_OpenedPrevious
             // 
             this.lbl_OpenedPrevious.AutoSize = true;
-            this.lbl_OpenedPrevious.Location = new System.Drawing.Point(41, 99);
+            this.lbl_OpenedPrevious.Location = new System.Drawing.Point(30, 467);
+            this.lbl_OpenedPrevious.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_OpenedPrevious.Name = "lbl_OpenedPrevious";
-            this.lbl_OpenedPrevious.Size = new System.Drawing.Size(93, 13);
+            this.lbl_OpenedPrevious.Size = new System.Drawing.Size(158, 20);
             this.lbl_OpenedPrevious.TabIndex = 9;
-            this.lbl_OpenedPrevious.Text = "Ouverts (previous)";
+            this.lbl_OpenedPrevious.Text = "Ouverts (précédents)";
             // 
             // lbl_OpenedRead
             // 
             this.lbl_OpenedRead.AutoSize = true;
-            this.lbl_OpenedRead.Location = new System.Drawing.Point(563, 99);
+            this.lbl_OpenedRead.Location = new System.Drawing.Point(416, 467);
+            this.lbl_OpenedRead.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_OpenedRead.Name = "lbl_OpenedRead";
-            this.lbl_OpenedRead.Size = new System.Drawing.Size(76, 13);
+            this.lbl_OpenedRead.Size = new System.Drawing.Size(64, 20);
             this.lbl_OpenedRead.TabIndex = 10;
-            this.lbl_OpenedRead.Text = "Ouverts (input)";
+            this.lbl_OpenedRead.Text = "Ouverts";
             // 
             // bt_ClosedOpenRead
             // 
-            this.bt_ClosedOpenRead.Location = new System.Drawing.Point(622, 162);
+            this.bt_ClosedOpenRead.Location = new System.Drawing.Point(510, 554);
+            this.bt_ClosedOpenRead.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bt_ClosedOpenRead.Name = "bt_ClosedOpenRead";
-            this.bt_ClosedOpenRead.Size = new System.Drawing.Size(75, 23);
+            this.bt_ClosedOpenRead.Size = new System.Drawing.Size(120, 35);
             this.bt_ClosedOpenRead.TabIndex = 11;
-            this.bt_ClosedOpenRead.Text = "Send";
+            this.bt_ClosedOpenRead.Text = "Valider";
             this.bt_ClosedOpenRead.UseVisualStyleBackColor = true;
             this.bt_ClosedOpenRead.Click += new System.EventHandler(this.bt_ClosedOpenRead_Click);
             // 
+            // pb_graph
+            // 
+            this.pb_graph.ImageLocation = "../../SujetGraph.png";
+            this.pb_graph.Location = new System.Drawing.Point(102, 32);
+            this.pb_graph.Name = "pb_graph";
+            this.pb_graph.Size = new System.Drawing.Size(500, 249);
+            this.pb_graph.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pb_graph.TabIndex = 12;
+            this.pb_graph.TabStop = false;
+            // 
+            // lbl_Correctness
+            // 
+            this.lbl_Correctness.AutoSize = true;
+            this.lbl_Correctness.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Correctness.Location = new System.Drawing.Point(115, 561);
+            this.lbl_Correctness.Name = "lbl_Correctness";
+            this.lbl_Correctness.Size = new System.Drawing.Size(0, 20);
+            this.lbl_Correctness.TabIndex = 13;
+            // 
+            // lbl_IndicationsInput
+            // 
+            this.lbl_IndicationsInput.AutoSize = true;
+            this.lbl_IndicationsInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_IndicationsInput.Location = new System.Drawing.Point(413, 315);
+            this.lbl_IndicationsInput.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl_IndicationsInput.Name = "lbl_IndicationsInput";
+            this.lbl_IndicationsInput.Size = new System.Drawing.Size(0, 20);
+            this.lbl_IndicationsInput.TabIndex = 14;
+            // 
             // DijkstraAForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(814, 624);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(1178, 875);
+            this.Controls.Add(this.lbl_IndicationsInput);
+            this.Controls.Add(this.lbl_Correctness);
+            this.Controls.Add(this.pb_graph);
             this.Controls.Add(this.bt_ClosedOpenRead);
             this.Controls.Add(this.lbl_OpenedRead);
             this.Controls.Add(this.lbl_OpenedPrevious);
@@ -158,8 +210,10 @@
             this.Controls.Add(this.tv_DijkstraSolved);
             this.Controls.Add(this.lb_DijkstraSolved);
             this.Controls.Add(this.lb_MatriceGraphe);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "DijkstraAForm";
             this.Text = "Dijkstra";
+            ((System.ComponentModel.ISupportInitialize)(this.pb_graph)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -179,5 +233,8 @@
         private System.Windows.Forms.Label lbl_OpenedPrevious;
         private System.Windows.Forms.Label lbl_OpenedRead;
         private System.Windows.Forms.Button bt_ClosedOpenRead;
+        private System.Windows.Forms.PictureBox pb_graph;
+        private System.Windows.Forms.Label lbl_Correctness;
+        private System.Windows.Forms.Label lbl_IndicationsInput;
     }
 }
