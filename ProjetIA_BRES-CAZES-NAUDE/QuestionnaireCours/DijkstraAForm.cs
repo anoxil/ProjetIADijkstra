@@ -15,18 +15,22 @@ namespace QuestionnaireCours
     {
         static public int[,] matrice;
         static public int nbNodes;
-        static public int numInitial;
         static public int numFinal;
-        private string[] sep = { ", ", " " };
+        private int numInitial;
+        private string[] sep = { " " };
         private int iteInput = 1;
         private int iteInputGoal = -1;
+        private SearchTree g;
 
         public DijkstraAForm()
         {
             InitializeComponent();
             ReadGraphFile();
             DijkstraASolverIterationDefiner();
-            tb_OpenedPrevious.Text = "A"; lbl_IndicationsInput.Text = "Veuillez remplir l'étape 2 de l'algorithme :";
+            lbl_Instructions.Text = "Remplissez à la main l'algorithme de Dijkstra pour aller du point " + ((char)(this.numInitial+65)).ToString() +" au point " + ((char)(numFinal + 65)).ToString() + ".";
+            tb_OpenedPrevious.Text = g.L_OuvertsEvolution[0][0];
+            lbl_IndicationsInput.Text = "Veuillez remplir l'étape " + (this.iteInput+1) + " de l'algorithme :";
+            this.ActiveControl = tb_ClosedRead;
         }
 
         private void ReadGraphFile ()
@@ -97,16 +101,22 @@ namespace QuestionnaireCours
             //On vérifie que l'input est étudiable
             if (!TextboxInputWorkable())
             {
-                MessageBox.Show("Vous semblez avoir mal rempli vos cases.\n\nRappel :\n - Une case ne sera jamais vide !\n - Les lettres doivent être en majuscule.\n - Si vous avez plusieurs lettres à rentrer, vous devez les séparer par \", \" ou \" \".");
+                MessageBox.Show("Vous semblez avoir mal rempli vos cases.\n\nRappel :\n - Une case ne sera jamais vide !\n - Les lettres doivent être en majuscule.\n - Si vous avez plusieurs lettres à rentrer, vous devez les séparer par \" \".");
                 return;
             }
             //On vérifie que l'input est juste
             if (TextboxInputCorrect())
             {
-                lbl_Correctness.Text = "Étape " + iteInput + " correcte !";
+                lbl_Correctness.Text = "Étape " + (this.iteInput+1) + " correcte !";
+                lbl_IndicationsInput.Text = "Veuillez remplir l'étape " + (this.iteInput+2) + " de l'algorithme :";
+                iteInput++;
                 tb_ClosedPrevious.Text = tb_ClosedRead.Text;
                 tb_OpenedPrevious.Text = tb_OpenedRead.Text;
-                if (iteInput == iteInputGoal) { MessageBox.Show("Dijkstra terminé !"); }
+                if (iteInput == iteInputGoal)
+                {
+                    lbl_IndicationsInput.Text = "Fin de l'algorithme.";
+                    MessageBox.Show("Dijkstra terminé !");
+                }
             }
             else { MessageBox.Show("Erreur dans votre proposition !"); }
         }
@@ -119,10 +129,11 @@ namespace QuestionnaireCours
             //Cases vides ?
             if ( (txtF.Length == 0) || (txtO.Length == 0) ) { return false; }
 
-            //Mauvaise séparations ? Element length <= 0, >=2 ? Not maj or in alphabet ?
+            //Mauvaise séparations ?
             string[] txtFElements = txtF.Split(this.sep, StringSplitOptions.None);
             string[] txtOElements = txtO.Split(this.sep, StringSplitOptions.None);
 
+            //Element length <= 0, >=2 ? Not maj or in alphabet ?
             foreach (string element in txtFElements)
             {
                 if ((element.Length < 1) || (element.Length > 1)) { return false; }
@@ -139,30 +150,22 @@ namespace QuestionnaireCours
 
         private bool TextboxInputCorrect ()
         {
-            //dijkstra solver comparé à l'input
             string[] txtFElements = tb_ClosedRead.Text.Split(this.sep, StringSplitOptions.None);
             string[] txtOElements = tb_OpenedRead.Text.Split(this.sep, StringSplitOptions.None);
 
-            numInitial = 0; numFinal = 1;
-            SearchTree g = new SearchTree();
-            SpecificNode N0 = new SpecificNode();
-            N0.numero = numInitial;
-
-            g.RechercheLFermesOuvertsAEtoile(N0, this);
-
             bool correct = true;
-
-            foreach (GenericNode el in g.L_Fermes)
+            
+            foreach (string node in g.L_FermesEvolution[iteInput])
             {
-                if (!txtFElements.Contains(el.ToLetter()))
+                if (!txtFElements.Contains(node))
                 {
                     correct = false;
                 }
             }
 
-            foreach (GenericNode el in g.L_Ouverts)
+            foreach (string node in g.L_OuvertsEvolution[iteInput])
             {
-                if (!txtOElements.Contains(el.ToLetter()))
+                if (!txtOElements.Contains(node))
                 {
                     correct = false;
                 }
@@ -173,12 +176,13 @@ namespace QuestionnaireCours
 
         private void DijkstraASolverIterationDefiner()
         {
-            numInitial = 0; numFinal = 1;
-            SearchTree g = new SearchTree();
+            this.numInitial = 0; numFinal = 1;
+            this.g = new SearchTree();
             SpecificNode N0 = new SpecificNode();
             N0.numero = numInitial;
             List<GenericNode> solution = g.RechercheSolutionAEtoile(N0, this);
 
+            //à supprimer à la fin//
             SpecificNode N1 = N0;
             for (int i = 1; i < solution.Count; i++)
             {
@@ -190,13 +194,15 @@ namespace QuestionnaireCours
             g.GetSearchTree(tv_DijkstraSolved);
         }
 
-        public void SetTbOpenedPreviousText(string txt) { this.tb_OpenedPrevious.Text = txt; }
-        public void SetTbClosedPreviousText(string txt) { this.tb_OpenedPrevious.Text = txt; }
-        public string GetTbOpenedReadText() { return this.tb_OpenedRead.Text; }
-        public string GetTbClosedReadText() { return this.tb_ClosedRead.Text; }
-        public int GetIterationInput() { return this.iteInput; }
-        public void IncrementIterationInput() { this.iteInput++; }
-        public int GetIterationInputGoal() { return this.iteInputGoal; }
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.bt_ClosedOpenRead_Click(sender, new EventArgs());
+                this.tb_ClosedRead.Focus();
+            }
+        }
+
         public void SetIterationInputGoal(int ite) { this.iteInputGoal = ite;}
 
     }

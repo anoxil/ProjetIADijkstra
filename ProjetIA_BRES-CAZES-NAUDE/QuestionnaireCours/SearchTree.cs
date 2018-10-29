@@ -8,6 +8,8 @@ namespace QuestionnaireCours
     {
         public List<GenericNode> L_Ouverts;
         public List<GenericNode> L_Fermes;
+        public List<String[]> L_FermesEvolution;
+        public List<String[]> L_OuvertsEvolution;
 
         public int CountInOpenList()
         {
@@ -44,14 +46,31 @@ namespace QuestionnaireCours
             return null;
         }
 
+        private string[] ToStringList(List<GenericNode> liste)
+        {
+            string[] nodes = new string[liste.Count];
+
+            for (int i = 0; i < liste.Count; i++)
+            {
+                nodes[i] = liste[i].ToLetter();
+            }
+
+            return nodes;
+        }
+
         public List<GenericNode> RechercheSolutionAEtoile(GenericNode N0, DijkstraAForm form)
         {
             int ite = 1;
             L_Ouverts = new List<GenericNode>();
             L_Fermes = new List<GenericNode>();
+            L_OuvertsEvolution = new List<String[]>();
+            L_FermesEvolution = new List<String[]>();
             // Le noeud passé en paramètre est supposé être le noeud initial
             GenericNode N = N0;
             L_Ouverts.Add(N0);
+
+            L_OuvertsEvolution.Add(ToStringList(L_Ouverts));
+            L_FermesEvolution.Add(ToStringList(L_Fermes));
 
             // tant que le noeud n'est pas terminal et que ouverts n'est pas vide
             while (L_Ouverts.Count != 0 && N.EndState() == false)
@@ -66,12 +85,22 @@ namespace QuestionnaireCours
                 this.MAJSuccesseurs(N);
                 // Inutile de retrier car les insertions ont été faites en respectant l'ordre
 
+                L_OuvertsEvolution.Add(ToStringList(L_Ouverts));
+                L_FermesEvolution.Add(ToStringList(L_Fermes));
+
                 // On prend le meilleur, donc celui en position 0, pour continuer à explorer les états
                 // A condition qu'il existe bien sûr
                 if (L_Ouverts.Count > 0) { N = L_Ouverts[0]; }
                 else { N = null; }
             }
             form.SetIterationInputGoal(++ite);
+
+            L_Fermes.Add(N);
+            L_Ouverts.Remove(N);
+            this.MAJSuccesseurs(N);
+
+            L_OuvertsEvolution.Add(ToStringList(L_Ouverts));
+            L_FermesEvolution.Add(ToStringList(L_Fermes));
 
             // A* terminé
             // On retourne le chemin qui va du noeud initial au noeud final sous forme de liste
@@ -89,45 +118,6 @@ namespace QuestionnaireCours
                 }
             }
             return _LN;
-        }
-
-        public void RechercheLFermesOuvertsAEtoile(GenericNode N0, DijkstraAForm form)
-        {
-            int ite = 2;
-            form.IncrementIterationInput();
-            L_Ouverts = new List<GenericNode>();
-            L_Fermes = new List<GenericNode>();
-            // Le noeud passé en paramètre est supposé être le noeud initial
-            GenericNode N = N0;
-            L_Ouverts.Add(N0);
-
-            // tant que le noeud n'est pas terminal et que ouverts n'est pas vide
-            while ( (L_Ouverts.Count != 0 && N.EndState() == false) && (ite < form.GetIterationInput()) )
-            {
-                // Le meilleur noeud des ouverts est supposé placé en tête de liste
-                // On le place dans les fermés
-                L_Ouverts.Remove(N);
-                L_Fermes.Add(N);
-
-                // Il faut trouver les noeuds successeurs de N
-                this.MAJSuccesseurs(N);
-                // Inutile de retrier car les insertions ont été faites en respectant l'ordre
-                ite++;
-
-                // On prend le meilleur, donc celui en position 0, pour continuer à explorer les états
-                // A condition qu'il existe bien sûr
-                if (L_Ouverts.Count > 0)
-                {
-                    N = L_Ouverts[0];
-                }
-                else
-                {
-                    N = null;
-                }
-            }
-            L_Fermes.Add(N);
-            L_Ouverts.Remove(N);
-            this.MAJSuccesseurs(N);
         }
 
         private void MAJSuccesseurs(GenericNode N)
