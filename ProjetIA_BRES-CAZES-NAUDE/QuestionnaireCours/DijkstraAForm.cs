@@ -21,22 +21,42 @@ namespace QuestionnaireCours
         private int iteInput = 1;
         private int iteInputGoal = -1;
         private SearchTree g;
+        private DijkstraAFormAnswers answersForm;
 
         public DijkstraAForm()
         {
             InitializeComponent();
+        }
+
+        private void DijkstraAForm_Load(object sender, EventArgs e)
+        {
+            this.answersForm = new DijkstraAFormAnswers(); // CREER UN NOUVEAU FORM DEPUIS AJOUTER POUR AFFICHER LES REPONSES A DIJKSTRA, LE DESIGNER ET AJOUTER LES INFOS SOUS LE SEP DANS CE FORM.
             ReadGraphFile();
             DijkstraASolverIterationDefiner();
-            lbl_Instructions.Text = "Remplissez à la main l'algorithme de Dijkstra pour aller du point " + ((char)(this.numInitial+65)).ToString() +" au point " + ((char)(numFinal + 65)).ToString() + ".";
+            lbl_Instructions.Text = "Remplissez à la main l'algorithme de Dijkstra pour aller du point " + ((char)(this.numInitial + 65)).ToString() + " au point " + ((char)(numFinal + 65)).ToString() + ".";
             tb_OpenedPrevious.Text = g.L_OuvertsEvolution[0][0];
-            lbl_IndicationsInput.Text = "Veuillez remplir l'étape " + (this.iteInput+1) + " de l'algorithme :";
+            lbl_IndicationsInput.Text = "Veuillez remplir l'étape " + (this.iteInput + 1) + " de l'algorithme :";
             this.ActiveControl = tb_ClosedRead;
         }
 
         private void ReadGraphFile ()
         {
+            // Randomisation du choix du fichier et des nodes départ-arrivée
+            /*
+            Random r = new Random();
+            int fileNumber = r.Next(1, 3);
+
+            string graphLocation = "../../graph" + fileNumber + ".txt";
+            string picLocation = "../../graph" + fileNumber + ".png";
+            StreamReader monStreamReader = new StreamReader(graphLocation);
+            this.pb_graph.ImageLocation = picLocation;
+            */
+            /////////////////////////////////////////////////////////////////
+            
             // Lecture du fichier
             StreamReader monStreamReader = new StreamReader("../../SujetGraph.txt");
+            pb_graph.ImageLocation = "../../SujetGraph.png";
+            numInitial = 0; numFinal = 4;
 
             // 1ère ligne : nombre de noeuds du graphe
             string ligne = monStreamReader.ReadLine();
@@ -88,11 +108,16 @@ namespace QuestionnaireCours
                 matrice[N1, N2] = val;
                 matrice[N2, N1] = val;
 
-                lb_MatriceGraphe.Items.Add( ((char)(N1+65)).ToString() + " ---> " + ((char)(N2+65)).ToString() + "   : " + Convert.ToString(matrice[N1, N2]));
-
                 ligne = monStreamReader.ReadLine();
             }
-            
+
+            //////////////////////////
+            /*
+            numInitial = r.Next(nbNodes);
+            do { numFinal = r.Next(nbNodes); } while (numFinal == numInitial)
+            */
+            //////////////////////////
+
             monStreamReader.Close();
         }
 
@@ -101,12 +126,13 @@ namespace QuestionnaireCours
             //On vérifie que l'input est étudiable
             if (!TextboxInputWorkable())
             {
-                MessageBox.Show("Vous semblez avoir mal rempli vos cases.\n\nRappel :\n - Une case ne sera jamais vide !\n - Les lettres doivent être en majuscule.\n - Si vous avez plusieurs lettres à rentrer, vous devez les séparer par \" \".");
+                MessageBox.Show("Vous semblez avoir mal rempli vos cases.\n\nRappel :\n - La case \"Fermés\" ne sera jamais vide !\n - Les lettres doivent être en majuscule.\n - Si vous avez plusieurs lettres à rentrer, vous devez les séparer par \" \".");
                 return;
             }
             //On vérifie que l'input est juste
             if (TextboxInputCorrect())
             {
+                lbl_Correctness.Text = ""; System.Threading.Thread.Sleep(200);
                 lbl_Correctness.Text = "Étape " + (this.iteInput+1) + " correcte !";
                 lbl_IndicationsInput.Text = "Veuillez remplir l'étape " + (this.iteInput+2) + " de l'algorithme :";
                 iteInput++;
@@ -116,6 +142,7 @@ namespace QuestionnaireCours
                 {
                     lbl_IndicationsInput.Text = "Fin de l'algorithme.";
                     MessageBox.Show("Dijkstra terminé !");
+                    //return dialog with the grades for the quizz//
                 }
             }
             else { MessageBox.Show("Erreur dans votre proposition !"); }
@@ -126,8 +153,8 @@ namespace QuestionnaireCours
             string txtF = tb_ClosedRead.Text;
             string txtO = tb_OpenedRead.Text;
 
-            //Cases vides ?
-            if ( (txtF.Length == 0) || (txtO.Length == 0) ) { return false; }
+            //Textbox Fermes vide ?
+            if (txtF.Length == 0) { return false; }
 
             //Mauvaise séparations ?
             string[] txtFElements = txtF.Split(this.sep, StringSplitOptions.None);
@@ -139,10 +166,13 @@ namespace QuestionnaireCours
                 if ((element.Length < 1) || (element.Length > 1)) { return false; }
                 if ((element.ToCharArray()[0] < 'A') || (element.ToCharArray()[0] > 'Z')) { return false; }
             }
-            foreach (string element in txtOElements)
+            if (txtO.Length != 0)
             {
-                if ((element.Length < 1) || (element.Length > 1)) { return false; }
-                if ((element.ToCharArray()[0] < 'A') || (element.ToCharArray()[0] > 'Z')) { return false; }
+                foreach (string element in txtOElements)
+                {
+                    if ((element.Length < 1) || (element.Length > 1)) { return false; }
+                    if ((element.ToCharArray()[0] < 'A') || (element.ToCharArray()[0] > 'Z')) { return false; }
+                }
             }
 
             return true;
@@ -153,13 +183,11 @@ namespace QuestionnaireCours
             string[] txtFElements = tb_ClosedRead.Text.Split(this.sep, StringSplitOptions.None);
             string[] txtOElements = tb_OpenedRead.Text.Split(this.sep, StringSplitOptions.None);
 
-            bool correct = true;
-            
             foreach (string node in g.L_FermesEvolution[iteInput])
             {
                 if (!txtFElements.Contains(node))
                 {
-                    correct = false;
+                    return false;
                 }
             }
 
@@ -167,32 +195,47 @@ namespace QuestionnaireCours
             {
                 if (!txtOElements.Contains(node))
                 {
-                    correct = false;
+                    return false;
                 }
             }
 
-            return correct;
+            return true;
         }
 
         private void DijkstraASolverIterationDefiner()
         {
-            this.numInitial = 0; numFinal = 1;
             this.g = new SearchTree();
             SpecificNode N0 = new SpecificNode();
             N0.numero = numInitial;
             List<GenericNode> solution = g.RechercheSolutionAEtoile(N0, this);
 
-            //à supprimer à la fin//
             SpecificNode N1 = N0;
             for (int i = 1; i < solution.Count; i++)
             {
                 SpecificNode N2 = (SpecificNode)solution[i];
-                lb_DijkstraSolved.Items.Add(((char)(N1.numero + 65)).ToString() + " ---> " + ((char)(N2.numero + 65)).ToString() + "   : " + Convert.ToString(matrice[N1.numero, N2.numero]));
+                answersForm.AddLbDijkstraSolvedItem(((char)(N1.numero + 65)).ToString() + " ---> " + ((char)(N2.numero + 65)).ToString() + "   : " + Convert.ToString(matrice[N1.numero, N2.numero]));
                 N1 = N2;
             }
 
-            g.GetSearchTree(tv_DijkstraSolved);
+            this.g.GetSearchTree(answersForm.GetTv());
+
+            string txt;
+            for (int i = 0; i < this.g.L_FermesEvolution.Count; i++)
+            {
+                txt = "(" + (i+1).ToString() + ") : { ";
+                foreach (string el in this.g.L_FermesEvolution[i]) { txt += (el + " "); } txt += "}";
+                answersForm.AddLbFermesGrapheItem(txt);
+            }
+            for (int i = 0; i < this.g.L_OuvertsEvolution.Count; i++)
+            {
+                txt = "(" + (i + 1).ToString() + ") : { ";
+                foreach (string el in this.g.L_OuvertsEvolution[i]) { txt += (el + " "); }
+                txt += "}";
+                answersForm.AddLbOuvertsGrapheItem(txt);
+            }
         }
+
+        public void SetIterationInputGoal(int ite) { this.iteInputGoal = ite; }
 
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
@@ -203,7 +246,11 @@ namespace QuestionnaireCours
             }
         }
 
-        public void SetIterationInputGoal(int ite) { this.iteInputGoal = ite;}
+        private void bt_Answers_Click(object sender, EventArgs e)
+        {
+            this.answersForm.Show();
+        }
+
 
     }
 }

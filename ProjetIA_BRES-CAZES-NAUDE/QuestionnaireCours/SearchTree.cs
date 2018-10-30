@@ -207,7 +207,7 @@ namespace QuestionnaireCours
             // On suppose le TreeView préexistant
             TV.Nodes.Clear();
 
-            TreeNode TN = new TreeNode(L_Fermes[0].ToString());
+            TreeNode TN = new TreeNode(L_Fermes[0].ToLetter());
             TV.Nodes.Add(TN);
 
             AjouteBranche(L_Fermes[0], TN);
@@ -218,7 +218,7 @@ namespace QuestionnaireCours
         {
             foreach (GenericNode GNfils in GN.GetEnfants())
             {
-                TreeNode TNfils = new TreeNode(GNfils.ToString());
+                TreeNode TNfils = new TreeNode(GNfils.ToLetter());
                 TN.Nodes.Add(TNfils);
                 if (GNfils.GetEnfants().Count > 0) AjouteBranche(GNfils, TNfils);
             }

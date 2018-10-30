@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lb_MatriceGraphe = new System.Windows.Forms.ListBox();
-            this.lb_DijkstraSolved = new System.Windows.Forms.ListBox();
-            this.tv_DijkstraSolved = new System.Windows.Forms.TreeView();
             this.tb_ClosedRead = new System.Windows.Forms.TextBox();
             this.tb_OpenedRead = new System.Windows.Forms.TextBox();
             this.tb_ClosedPrevious = new System.Windows.Forms.TextBox();
@@ -43,38 +40,10 @@
             this.pb_graph = new System.Windows.Forms.PictureBox();
             this.lbl_Correctness = new System.Windows.Forms.Label();
             this.lbl_IndicationsInput = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.lbl_Instructions = new System.Windows.Forms.Label();
+            this.bt_Answers = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pb_graph)).BeginInit();
             this.SuspendLayout();
-            // 
-            // lb_MatriceGraphe
-            // 
-            this.lb_MatriceGraphe.FormattingEnabled = true;
-            this.lb_MatriceGraphe.ItemHeight = 20;
-            this.lb_MatriceGraphe.Location = new System.Drawing.Point(30, 640);
-            this.lb_MatriceGraphe.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.lb_MatriceGraphe.Name = "lb_MatriceGraphe";
-            this.lb_MatriceGraphe.Size = new System.Drawing.Size(190, 224);
-            this.lb_MatriceGraphe.TabIndex = 0;
-            // 
-            // lb_DijkstraSolved
-            // 
-            this.lb_DijkstraSolved.FormattingEnabled = true;
-            this.lb_DijkstraSolved.ItemHeight = 20;
-            this.lb_DijkstraSolved.Location = new System.Drawing.Point(228, 640);
-            this.lb_DijkstraSolved.Margin = new System.Windows.Forms.Padding(4, 5, 4, 29);
-            this.lb_DijkstraSolved.Name = "lb_DijkstraSolved";
-            this.lb_DijkstraSolved.Size = new System.Drawing.Size(196, 224);
-            this.lb_DijkstraSolved.TabIndex = 1;
-            // 
-            // tv_DijkstraSolved
-            // 
-            this.tv_DijkstraSolved.Location = new System.Drawing.Point(432, 640);
-            this.tv_DijkstraSolved.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tv_DijkstraSolved.Name = "tv_DijkstraSolved";
-            this.tv_DijkstraSolved.Size = new System.Drawing.Size(288, 224);
-            this.tv_DijkstraSolved.TabIndex = 2;
             // 
             // tb_ClosedRead
             // 
@@ -154,7 +123,7 @@
             // bt_ClosedOpenRead
             // 
             this.bt_ClosedOpenRead.Location = new System.Drawing.Point(510, 554);
-            this.bt_ClosedOpenRead.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.bt_ClosedOpenRead.Margin = new System.Windows.Forms.Padding(4, 5, 4, 30);
             this.bt_ClosedOpenRead.Name = "bt_ClosedOpenRead";
             this.bt_ClosedOpenRead.Size = new System.Drawing.Size(120, 35);
             this.bt_ClosedOpenRead.TabIndex = 11;
@@ -164,7 +133,6 @@
             // 
             // pb_graph
             // 
-            this.pb_graph.ImageLocation = "../../SujetGraph.png";
             this.pb_graph.Location = new System.Drawing.Point(73, 81);
             this.pb_graph.Name = "pb_graph";
             this.pb_graph.Size = new System.Drawing.Size(600, 200);
@@ -191,24 +159,25 @@
             this.lbl_IndicationsInput.Size = new System.Drawing.Size(0, 20);
             this.lbl_IndicationsInput.TabIndex = 14;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 594);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(693, 20);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "____________________________________________________________________________";
-            // 
             // lbl_Instructions
             // 
             this.lbl_Instructions.AutoSize = true;
             this.lbl_Instructions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Instructions.Location = new System.Drawing.Point(49, 29);
             this.lbl_Instructions.Name = "lbl_Instructions";
-            this.lbl_Instructions.Size = new System.Drawing.Size(40, 20);
+            this.lbl_Instructions.Size = new System.Drawing.Size(0, 20);
             this.lbl_Instructions.TabIndex = 16;
-            this.lbl_Instructions.Text = "test";
+            // 
+            // bt_Answers
+            // 
+            this.bt_Answers.Location = new System.Drawing.Point(100, 308);
+            this.bt_Answers.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.bt_Answers.Name = "bt_Answers";
+            this.bt_Answers.Size = new System.Drawing.Size(120, 35);
+            this.bt_Answers.TabIndex = 18;
+            this.bt_Answers.Text = "Réponses";
+            this.bt_Answers.UseVisualStyleBackColor = true;
+            this.bt_Answers.Click += new System.EventHandler(this.bt_Answers_Click);
             // 
             // DijkstraAForm
             // 
@@ -216,9 +185,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(748, 875);
+            this.ClientSize = new System.Drawing.Size(748, 617);
+            this.Controls.Add(this.bt_Answers);
             this.Controls.Add(this.lbl_Instructions);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.lbl_IndicationsInput);
             this.Controls.Add(this.lbl_Correctness);
             this.Controls.Add(this.pb_graph);
@@ -231,12 +200,10 @@
             this.Controls.Add(this.tb_ClosedPrevious);
             this.Controls.Add(this.tb_OpenedRead);
             this.Controls.Add(this.tb_ClosedRead);
-            this.Controls.Add(this.tv_DijkstraSolved);
-            this.Controls.Add(this.lb_DijkstraSolved);
-            this.Controls.Add(this.lb_MatriceGraphe);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "DijkstraAForm";
             this.Text = "Dijkstra";
+            this.Load += new System.EventHandler(this.DijkstraAForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pb_graph)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -244,10 +211,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox lb_MatriceGraphe;
-        private System.Windows.Forms.ListBox lb_DijkstraSolved;
-        private System.Windows.Forms.TreeView tv_DijkstraSolved;
         private System.Windows.Forms.TextBox tb_ClosedRead;
         private System.Windows.Forms.TextBox tb_OpenedRead;
         private System.Windows.Forms.TextBox tb_ClosedPrevious;
@@ -260,7 +223,7 @@
         private System.Windows.Forms.PictureBox pb_graph;
         private System.Windows.Forms.Label lbl_Correctness;
         private System.Windows.Forms.Label lbl_IndicationsInput;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lbl_Instructions;
+        private System.Windows.Forms.Button bt_Answers;
     }
 }
