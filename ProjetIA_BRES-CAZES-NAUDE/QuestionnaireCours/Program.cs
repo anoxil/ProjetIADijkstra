@@ -18,6 +18,7 @@ namespace QuestionnaireCours
             Application.SetCompatibleTextRenderingDefault(false);
             DijkstraAForm form = new DijkstraAForm();
             Application.Run(form);
+            //to get note --> form.note
         }
     }
 }

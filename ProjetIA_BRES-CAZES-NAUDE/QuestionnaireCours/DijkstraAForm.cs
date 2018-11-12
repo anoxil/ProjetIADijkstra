@@ -16,11 +16,11 @@ namespace QuestionnaireCours
         static public int[,] matrice;
         static public int nbNodes;
         static public int numFinal;
+        public int note = 0;
         private int numInitial;
         private string[] sep = { " " };
         private int iteInput = 1;
         private int iteInputGoal = -1;
-        private int note = 0;
         private SearchTree g;
         private DijkstraAFormAnswers answersForm;
 
@@ -156,10 +156,16 @@ namespace QuestionnaireCours
                     lbl_IndicationsInput.Text = "Fin de l'algorithme.";
                     this.note = 3;
                     MessageBox.Show("Dijkstra réussi !");
-                    Application.Exit();
+                    //On arrête la question avec une note de 3
+                    this.Close();
                 }
             }
-            else { MessageBox.Show("Erreur dans votre proposition !"); }
+            else
+            {
+                MessageBox.Show("Erreur dans votre proposition ! Fin de la question.");
+                //On arrête la question avec une note de 0
+                this.Close();
+            }
         }
 
         private bool TextboxInputWorkable ()
