@@ -1,0 +1,10 @@
+H:\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\bin\Debug\QuestionnaireCours.exe.config
+H:\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\bin\Debug\QuestionnaireCours.exe
+H:\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\bin\Debug\QuestionnaireCours.pdb
+H:\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.csprojResolveAssemblyReference.cache
+H:\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.DijkstraAForm.resources
+H:\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.DijkstraAFormAnswers.resources
+H:\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.Properties.Resources.resources
+H:\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.csproj.GenerateResource.Cache
+H:\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.exe
+H:\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.pdb

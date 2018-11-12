@@ -46,6 +46,7 @@ namespace QuestionnaireCours
             return null;
         }
 
+        /* Retourne la lettre correspondante au node */
         private string[] ToStringList(List<GenericNode> liste)
         {
             string[] nodes = new string[liste.Count];
@@ -69,6 +70,7 @@ namespace QuestionnaireCours
             //e.g : si on en est à l'étape 2 de la résolution, la liste L_FermesEvolution contiendra { {"N0"}, {"N0", "N1"} }
             L_OuvertsEvolution = new List<String[]>();
             L_FermesEvolution = new List<String[]>();
+
             //Le noeud passé en paramètre est supposé être le noeud initial
             GenericNode N = N0;
             L_Ouverts.Add(N0);
@@ -90,6 +92,7 @@ namespace QuestionnaireCours
                 this.MAJSuccesseurs(N);
                 // Inutile de retrier car les insertions ont été faites en respectant l'ordre
 
+                //Enregistrement de l'étape "ite"
                 L_OuvertsEvolution.Add(ToStringList(L_Ouverts));
                 L_FermesEvolution.Add(ToStringList(L_Fermes));
 
@@ -104,6 +107,7 @@ namespace QuestionnaireCours
             L_Ouverts.Remove(N);
             this.MAJSuccesseurs(N);
 
+            //Enregistrement de la dernière étape
             L_OuvertsEvolution.Add(ToStringList(L_Ouverts));
             L_FermesEvolution.Add(ToStringList(L_Fermes));
 

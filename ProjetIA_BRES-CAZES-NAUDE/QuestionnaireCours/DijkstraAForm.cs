@@ -20,6 +20,7 @@ namespace QuestionnaireCours
         private string[] sep = { " " };
         private int iteInput = 1;
         private int iteInputGoal = -1;
+        private int note = 0;
         private SearchTree g;
         private DijkstraAFormAnswers answersForm;
 
@@ -64,7 +65,13 @@ namespace QuestionnaireCours
             // Lecture du fichier
             StreamReader monStreamReader = new StreamReader("../../SujetGraph.txt");
             pb_graph.ImageLocation = "../../SujetGraph.png";
-            numInitial = 0; numFinal = 4;
+            numInitial = 0; numFinal = 1; //SUPPRIMER POUR RANDOMISER//
+            //////////////////////////
+            /*
+            numInitial = r.Next(nbNodes);
+            do { numFinal = r.Next(nbNodes); } while (numFinal == numInitial)
+            */
+            //////////////////////////
 
             // 1ère ligne : nombre de noeuds du graphe
             string ligne = monStreamReader.ReadLine();
@@ -119,12 +126,7 @@ namespace QuestionnaireCours
                 ligne = monStreamReader.ReadLine();
             }
 
-            //////////////////////////
-            /*
-            numInitial = r.Next(nbNodes);
-            do { numFinal = r.Next(nbNodes); } while (numFinal == numInitial)
-            */
-            //////////////////////////
+
 
             monStreamReader.Close();
         }
@@ -132,7 +134,6 @@ namespace QuestionnaireCours
         /* Fontion de vérification de l'input de l'utilisateur à l'étape iteInput. */
         private void bt_ClosedOpenRead_Click(object sender, EventArgs e)
         {
-
             //On vérifie que l'input est étudiable
             if (!TextboxInputWorkable())
             {
@@ -153,8 +154,9 @@ namespace QuestionnaireCours
                 if (iteInput == iteInputGoal)
                 {
                     lbl_IndicationsInput.Text = "Fin de l'algorithme.";
-                    MessageBox.Show("Dijkstra terminé !");
-                    //return dialog with the grades for the quizz//
+                    this.note = 3;
+                    MessageBox.Show("Dijkstra réussi !");
+                    Application.Exit();
                 }
             }
             else { MessageBox.Show("Erreur dans votre proposition !"); }
@@ -192,25 +194,28 @@ namespace QuestionnaireCours
 
         private bool TextboxInputCorrect ()
         {
-            string[] txtFElements = tb_ClosedRead.Text.Split(this.sep, StringSplitOptions.None);
-            string[] txtOElements = tb_OpenedRead.Text.Split(this.sep, StringSplitOptions.None);
+            List<string> txtFElements = tb_ClosedRead.Text.Split(this.sep, StringSplitOptions.None).ToList<string>();
+            List<string> txtOElements = tb_OpenedRead.Text.Split(this.sep, StringSplitOptions.None).ToList<string>();
 
             //On parcourt toutes les nodes de l'étape iteInput dans l'ensemble fermés, pour vérifier l'input de l'utilisateur.
             foreach (string node in g.L_FermesEvolution[iteInput])
             {
-                if (!txtFElements.Contains(node))
+                if (txtFElements.Contains(node))
                 {
-                    return false;
+                    txtFElements.Remove(node);
                 }
             }
+            if (txtFElements.Count > 0) { return false; }
+
             //On parcourt toutes les nodes de l'étape iteInput dans l'ensemble ouverts, pour vérifier l'input de l'utilisateur.
             foreach (string node in g.L_OuvertsEvolution[iteInput])
             {
-                if (!txtOElements.Contains(node))
+                if (txtOElements.Contains(node))
                 {
-                    return false;
+                    txtOElements.Remove(node);
                 }
             }
+            if (txtOElements.Count > 0) { return false; }
 
             return true;
         }
@@ -254,6 +259,8 @@ namespace QuestionnaireCours
 
         public void SetIterationInputGoal(int ite) { this.iteInputGoal = ite; }
 
+        public int GetNote() { return this.note; }
+
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -273,6 +280,14 @@ namespace QuestionnaireCours
             }
         }
 
+        /*
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            MessageBox.Show(e.CloseReason.ToString());
+            if (e.CloseReason == CloseReason.ApplicationExitCall) { e.Cancel = true; answersForm.Hide(); this.Hide(); }
+            base.OnFormClosing(e);
+        }
+        */
 
     }
 }
