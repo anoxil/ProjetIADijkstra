@@ -131,7 +131,7 @@
             this.Controls.Add(this.tv_DijkstraSolved);
             this.Controls.Add(this.lb_FermesGraphe);
             this.Name = "DijkstraAFormAnswers";
-            this.Text = "DijkstraAFormAnswers";
+            this.Text = "Réponses à l\'algorithme";
             this.ResumeLayout(false);
             this.PerformLayout();
 

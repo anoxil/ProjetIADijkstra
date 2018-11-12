@@ -58,17 +58,22 @@ namespace QuestionnaireCours
             return nodes;
         }
 
+        /* Fonction principale de résolution de l'algorithme */
         public List<GenericNode> RechercheSolutionAEtoile(GenericNode N0, DijkstraAForm form)
         {
             int ite = 1;
+            //Listes qui se remplira des nodes pour la résolution de l'algorithme
             L_Ouverts = new List<GenericNode>();
             L_Fermes = new List<GenericNode>();
+            //Liste contenant les solutions string de l'input pour l'utilisateur
+            //e.g : si on en est à l'étape 2 de la résolution, la liste L_FermesEvolution contiendra { {"N0"}, {"N0", "N1"} }
             L_OuvertsEvolution = new List<String[]>();
             L_FermesEvolution = new List<String[]>();
-            // Le noeud passé en paramètre est supposé être le noeud initial
+            //Le noeud passé en paramètre est supposé être le noeud initial
             GenericNode N = N0;
             L_Ouverts.Add(N0);
 
+            //Enregistrement de l'étape 1
             L_OuvertsEvolution.Add(ToStringList(L_Ouverts));
             L_FermesEvolution.Add(ToStringList(L_Fermes));
 

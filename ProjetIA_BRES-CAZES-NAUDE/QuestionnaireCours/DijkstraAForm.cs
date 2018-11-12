@@ -28,11 +28,19 @@ namespace QuestionnaireCours
             InitializeComponent();
         }
 
+        /* Fonction exécutée après l'initialisation du form.
+         * Prépare le graphe qui sera étudié et le résout,
+         * avant même la récupération de l'input de l'utilisateur
+        */
         private void DijkstraAForm_Load(object sender, EventArgs e)
         {
-            this.answersForm = new DijkstraAFormAnswers(); // CREER UN NOUVEAU FORM DEPUIS AJOUTER POUR AFFICHER LES REPONSES A DIJKSTRA, LE DESIGNER ET AJOUTER LES INFOS SOUS LE SEP DANS CE FORM.
+            //Form contenant toutes les réponses nécessaires à la résolution de l'algo à la main. Accessible aux correcteurs du projet.
+            this.answersForm = new DijkstraAFormAnswers();
+            //Lecture du graphe à modéliser
             ReadGraphFile();
+            //Algorithme de résolution Dijkstra A* du graphe avec la classe SearchTree. Récupération possible des réponses dans la variable SearchTree g.
             DijkstraASolverIterationDefiner();
+            //Initialisation des string à afficher sur le form
             lbl_Instructions.Text = "Remplissez à la main l'algorithme de Dijkstra pour aller du point " + ((char)(this.numInitial + 65)).ToString() + " au point " + ((char)(numFinal + 65)).ToString() + ".";
             tb_OpenedPrevious.Text = g.L_OuvertsEvolution[0][0];
             lbl_IndicationsInput.Text = "Veuillez remplir l'étape " + (this.iteInput + 1) + " de l'algorithme :";
@@ -120,9 +128,11 @@ namespace QuestionnaireCours
 
             monStreamReader.Close();
         }
-
+        
+        /* Fontion de vérification de l'input de l'utilisateur à l'étape iteInput. */
         private void bt_ClosedOpenRead_Click(object sender, EventArgs e)
         {
+
             //On vérifie que l'input est étudiable
             if (!TextboxInputWorkable())
             {
@@ -132,12 +142,14 @@ namespace QuestionnaireCours
             //On vérifie que l'input est juste
             if (TextboxInputCorrect())
             {
+                //On refresh les informations pour l'étape suivante
                 lbl_Correctness.Text = ""; System.Threading.Thread.Sleep(200);
                 lbl_Correctness.Text = "Étape " + (this.iteInput+1) + " correcte !";
                 lbl_IndicationsInput.Text = "Veuillez remplir l'étape " + (this.iteInput+2) + " de l'algorithme :";
                 iteInput++;
                 tb_ClosedPrevious.Text = tb_ClosedRead.Text;
                 tb_OpenedPrevious.Text = tb_OpenedRead.Text;
+                //Si l'utilisateur a terminé l'algorithme sans faute
                 if (iteInput == iteInputGoal)
                 {
                     lbl_IndicationsInput.Text = "Fin de l'algorithme.";
@@ -183,6 +195,7 @@ namespace QuestionnaireCours
             string[] txtFElements = tb_ClosedRead.Text.Split(this.sep, StringSplitOptions.None);
             string[] txtOElements = tb_OpenedRead.Text.Split(this.sep, StringSplitOptions.None);
 
+            //On parcourt toutes les nodes de l'étape iteInput dans l'ensemble fermés, pour vérifier l'input de l'utilisateur.
             foreach (string node in g.L_FermesEvolution[iteInput])
             {
                 if (!txtFElements.Contains(node))
@@ -190,7 +203,7 @@ namespace QuestionnaireCours
                     return false;
                 }
             }
-
+            //On parcourt toutes les nodes de l'étape iteInput dans l'ensemble ouverts, pour vérifier l'input de l'utilisateur.
             foreach (string node in g.L_OuvertsEvolution[iteInput])
             {
                 if (!txtOElements.Contains(node))
@@ -207,8 +220,10 @@ namespace QuestionnaireCours
             this.g = new SearchTree();
             SpecificNode N0 = new SpecificNode();
             N0.numero = numInitial;
+            //Algorithme de Dijkstra A* dans la classe SearchTree
             List<GenericNode> solution = g.RechercheSolutionAEtoile(N0, this);
 
+            //Enregistrement de la solution finale à l'algorithme du chemin le plus court dans le Form de réponses
             SpecificNode N1 = N0;
             for (int i = 1; i < solution.Count; i++)
             {
@@ -217,8 +232,10 @@ namespace QuestionnaireCours
                 N1 = N2;
             }
 
+            //Enregistrement de l'arbre final de l'algorithme dans le Form de réponses
             this.g.GetSearchTree(answersForm.GetTv());
 
+            //Enregistrement des réponses (fermés et ouverts) à chaque étape de l'algorithme à la main de Dijkstra dans le Form de réponses
             string txt;
             for (int i = 0; i < this.g.L_FermesEvolution.Count; i++)
             {
@@ -246,9 +263,14 @@ namespace QuestionnaireCours
             }
         }
 
+        /* Accès au Form contenant les réponses au graphe. Pour faciliter la correction. */
         private void bt_Answers_Click(object sender, EventArgs e)
         {
+            DialogResult res = MessageBox.Show("Cette fonctionnalité n'est accessible qu'aux correcteurs du projets.\n\nÊtes vous un correcteur ?", "Vérification", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (res == DialogResult.Yes)
+            {
             this.answersForm.Show();
+            }
         }
 
 
