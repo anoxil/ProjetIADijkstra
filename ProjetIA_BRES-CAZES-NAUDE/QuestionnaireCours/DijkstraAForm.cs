@@ -21,8 +21,17 @@ namespace QuestionnaireCours
         private string[] sep = { " " };
         private int iteInput = 1;
         private int iteInputGoal = -1;
+        private int tvInputCorrectNodes = 0;
+        private int tvInputCorrectNodesGoal = 0;
+
+        private bool profBypass;
+        private string profGraphPath;
+        private int profNumInitial;
+        private int profNumFinal;
+
         private SearchTree g;
-        private DijkstraAFormAnswers answersForm;
+        public DijkstraAFormAnswers answersForm;
+        
 
         public DijkstraAForm()
         {
@@ -35,6 +44,7 @@ namespace QuestionnaireCours
         */
         private void DijkstraAForm_Load(object sender, EventArgs e)
         {
+            ProfBypassing();
             //Form contenant toutes les réponses nécessaires à la résolution de l'algo à la main. Accessible aux correcteurs du projet.
             this.answersForm = new DijkstraAFormAnswers();
             //Lecture du graphe à modéliser
@@ -48,35 +58,47 @@ namespace QuestionnaireCours
             this.ActiveControl = tb_ClosedRead;
         }
 
+        /* Appelle un form si le professeur souhaite remplir son propre graphe */
+        private void ProfBypassing()
+        {
+            DialogResult res = MessageBox.Show("=== Question sur Dijkstra ===\n\nSi vous êtes correcteur, vous avez la possibilité de forcer l'affichage de votre graphe. Souhaitez-vous le faire ?", "Dijkstra - Graphe de correcteur", MessageBoxButtons.YesNo);
+            if (res == DialogResult.Yes)
+            {
+                this.profBypass = true;
+                ProfBypassForm pb = new ProfBypassForm(this);
+                pb.ShowDialog();
+            }
+            else { this.profBypass = false; }
+        }
+
         private void ReadGraphFile ()
         {
-            // Randomisation du choix du fichier et des nodes départ-arrivée
-            /*
+            // Initialisation lecture du fichier
+            StreamReader monStreamReader;
             Random r = new Random();
-            int fileNumber = r.Next(1, 3);
+            //si c'est le correcteur qui a défini le graphe
+            if (this.profBypass)
+            {
+                monStreamReader = new StreamReader(this.profGraphPath); this.pb_graph.ImageLocation = "../../unknowngraph.png";
+            }
+            else //sinon on en choisi un au hasard parmi la collection
+            {
+                // Randomisation du choix du fichier et des nodes départ-arrivée
+                int fileNumber = r.Next(1, 3);
 
-            string graphLocation = "../../graph" + fileNumber + ".txt";
-            string picLocation = "../../graph" + fileNumber + ".png";
-            StreamReader monStreamReader = new StreamReader(graphLocation);
-            this.pb_graph.ImageLocation = picLocation;
-            */
-            /////////////////////////////////////////////////////////////////
-            
-            // Lecture du fichier
-            StreamReader monStreamReader = new StreamReader("../../SujetGraph.txt");
-            pb_graph.ImageLocation = "../../SujetGraph.png";
-            numInitial = 0; numFinal = 1; //SUPPRIMER POUR RANDOMISER//
-            //////////////////////////
-            /*
-            numInitial = r.Next(nbNodes);
-            do { numFinal = r.Next(nbNodes); } while (numFinal == numInitial)
-            */
-            //////////////////////////
+                string graphLocation = "../../graph" + fileNumber + ".txt";
+                string picLocation = "../../graph" + fileNumber + ".png";
+                monStreamReader = new StreamReader(graphLocation);
+                this.pb_graph.ImageLocation = picLocation;
+            }
+
 
             // 1ère ligne : nombre de noeuds du graphe
             string ligne = monStreamReader.ReadLine();
-            int i = ligne.IndexOf(':') + 1;
-            string nbNodesString = "";
+            int i = 0;
+            while (ligne[i] != ':') i++;
+            string nbNodesString = ""; i++;
+            while (ligne[i] == ' ') i++; // on saute les blancs éventuels
             while (i < ligne.Length)
             {
                 nbNodesString = nbNodesString + ligne[i]; i++;
@@ -93,7 +115,10 @@ namespace QuestionnaireCours
             int N1, N2, val; string strN1, strN2, strVal;
             while (ligne != null)
             {
-                i = ligne.IndexOf(':') + 1;
+                i = 0;
+                while (ligne[i] != ':') i++;
+                i++; // on passe le :
+                while (ligne[i] == ' ') i++; // on saute les blancs éventuels
 
                 //nodedépart
                 strN1 = "";
@@ -104,7 +129,8 @@ namespace QuestionnaireCours
                 N1 = Convert.ToInt32(strN1);
 
                 //nodearrivée
-                strN2 = ""; i++;
+                while (ligne[i] == ' ') i++;
+                strN2 = "";
                 while (ligne[i] != ' ')
                 {
                     strN2 = strN2 + ligne[i]; i++;
@@ -112,7 +138,8 @@ namespace QuestionnaireCours
                 N2 = Convert.ToInt32(strN2);
 
                 //valeur
-                strVal = ""; i++;
+                while (ligne[i] == ' ') i++;
+                strVal = "";
                 while ((i < ligne.Length) && (ligne[i] != ' '))
                 {
                     strVal = strVal + ligne[i]; i++;
@@ -125,19 +152,25 @@ namespace QuestionnaireCours
 
                 ligne = monStreamReader.ReadLine();
             }
-
-
-
             monStreamReader.Close();
+
+            //définition de la valeur des numInitial et numFinal
+            if (this.profBypass) { numInitial = this.profNumInitial; numFinal = this.profNumFinal; }
+            else
+            {
+                //numInitial = 0; numFinal = 1; //SUPPRIMER POUR RANDOMISER//
+                numInitial = r.Next(nbNodes);
+                do { numFinal = r.Next(nbNodes); } while (numFinal == numInitial);
+            }
         }
-        
+
         /* Fontion de vérification de l'input de l'utilisateur à l'étape iteInput. */
         private void bt_ClosedOpenRead_Click(object sender, EventArgs e)
         {
             //On vérifie que l'input est étudiable
             if (!TextboxInputWorkable())
             {
-                MessageBox.Show("Vous semblez avoir mal rempli vos cases.\n\nRappel :\n - La case \"Fermés\" ne sera jamais vide !\n - Les lettres doivent être en majuscule.\n - Si vous avez plusieurs lettres à rentrer, vous devez les séparer par \" \".");
+                MessageBox.Show("Vous semblez avoir mal rempli vos cases.\n\nRappel :\n - La case \"Fermés\" ne sera jamais vide !\n - Les lettres doivent être en majuscule.\n - Si vous avez plusieurs lettres à rentrer, vous devez les séparer par un simple espace.\n\nExemples (sans les guillemets) : \"A B D C E\", \"F G H L\", \"A\"");
                 return;
             }
             //On vérifie que l'input est juste
@@ -154,17 +187,23 @@ namespace QuestionnaireCours
                 if (iteInput == iteInputGoal)
                 {
                     lbl_IndicationsInput.Text = "Fin de l'algorithme.";
-                    this.note = 3;
+                    this.note += 2;
                     MessageBox.Show("Dijkstra réussi !");
-                    //On arrête la question avec une note de 3
-                    this.Close();
+                    bt_ClosedOpenRead.Enabled = false;
+                    tb_ClosedRead.ReadOnly = true;
+                    tb_OpenedRead.ReadOnly = true;
+
+                    QuestionEnded();
                 }
             }
             else
             {
-                MessageBox.Show("Erreur dans votre proposition ! Fin de la question.");
-                //On arrête la question avec une note de 0
-                this.Close();
+                MessageBox.Show("Erreur dans votre proposition ! Algorithme Dijkstra échoué.");
+                bt_ClosedOpenRead.Enabled = false;
+                tb_ClosedRead.ReadOnly = true;
+                tb_OpenedRead.ReadOnly = true;
+
+                QuestionEnded();
             }
         }
 
@@ -204,6 +243,7 @@ namespace QuestionnaireCours
             List<string> txtOElements = tb_OpenedRead.Text.Split(this.sep, StringSplitOptions.None).ToList<string>();
 
             //On parcourt toutes les nodes de l'étape iteInput dans l'ensemble fermés, pour vérifier l'input de l'utilisateur.
+            if (g.L_FermesEvolution[iteInput].Length!= txtFElements.Count) { return false; }
             foreach (string node in g.L_FermesEvolution[iteInput])
             {
                 if (txtFElements.Contains(node))
@@ -214,6 +254,7 @@ namespace QuestionnaireCours
             if (txtFElements.Count > 0) { return false; }
 
             //On parcourt toutes les nodes de l'étape iteInput dans l'ensemble ouverts, pour vérifier l'input de l'utilisateur.
+            if (g.L_OuvertsEvolution[iteInput].Length != txtOElements.Count) { return false; }
             foreach (string node in g.L_OuvertsEvolution[iteInput])
             {
                 if (txtOElements.Contains(node))
@@ -226,6 +267,7 @@ namespace QuestionnaireCours
             return true;
         }
 
+        /* Résolution du graphe */
         private void DijkstraASolverIterationDefiner()
         {
             this.g = new SearchTree();
@@ -244,7 +286,8 @@ namespace QuestionnaireCours
             }
 
             //Enregistrement de l'arbre final de l'algorithme dans le Form de réponses
-            this.g.GetSearchTree(answersForm.GetTv());
+            this.g.GetSearchTree(answersForm.GetTv(), true);
+            this.g.GetSearchTree(tv_input, false);
 
             //Enregistrement des réponses (fermés et ouverts) à chaque étape de l'algorithme à la main de Dijkstra dans le Form de réponses
             string txt;
@@ -263,16 +306,21 @@ namespace QuestionnaireCours
             }
         }
 
-        public void SetIterationInputGoal(int ite) { this.iteInputGoal = ite; }
-
-        public int GetNote() { return this.note; }
-
+        /* Petite fonction pour améliorer l'ergo de l'app */
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                this.bt_ClosedOpenRead_Click(sender, new EventArgs());
-                this.tb_ClosedRead.Focus();
+                if (sender == this.tb_OpenedRead)
+                {
+                    this.bt_ClosedOpenRead_Click(sender, new EventArgs());
+                    this.tb_ClosedRead.Focus();
+                }
+                else if (sender == this.tb_changeNodeTvInput)
+                {
+                    this.bt_changeNodeTvInput_Click(sender, new EventArgs());
+                    this.tb_changeNodeTvInput.Text = "";
+                }
             }
         }
 
@@ -286,14 +334,77 @@ namespace QuestionnaireCours
             }
         }
 
-        /*
-        protected override void OnFormClosing(FormClosingEventArgs e)
+        /* Modifie le texte de la dernière case sélectionnée du TreeView de l'utilisateur */
+        private void bt_changeNodeTvInput_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(e.CloseReason.ToString());
-            if (e.CloseReason == CloseReason.ApplicationExitCall) { e.Cancel = true; answersForm.Hide(); this.Hide(); }
-            base.OnFormClosing(e);
+            this.tv_input.SelectedNode.Text = this.tb_changeNodeTvInput.Text;
         }
-        */
 
+        /* Correction de l'arbre TreeView de l'utilisateur */
+        private void bt_sendTvInput_Click(object sender, EventArgs e)
+        {
+            //if all àremplirtv nodes = all answerstv nodes --> this.note++;
+            CheckRecursive(this.answersForm.GetTv());
+            
+            if (this.tvInputCorrectNodes == this.tvInputCorrectNodesGoal)
+            {
+                MessageBox.Show("Arbre correctement rempli !");
+                this.note++;
+                bt_sendTvInput.Enabled = false;
+                bt_changeNodeTvInput.Enabled = false;
+                tb_changeNodeTvInput.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Arbre mal rempli...");
+                bt_sendTvInput.Enabled = false;
+                bt_changeNodeTvInput.Enabled = false;
+                tb_changeNodeTvInput.Enabled = false;
+            }
+
+            QuestionEnded();
+        }
+
+        /* Vérification récursive de l'égalité des nodes entre tv_input et answersForm.tv */
+        private void CheckRecursive(TreeView tvCorrect)
+        {
+            TreeNodeCollection nodes = tvCorrect.Nodes;
+            TreeNodeCollection nodesToCheck = this.tv_input.Nodes;
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                SubRecursive(nodes[i], nodesToCheck[i]);
+            }
+        }
+
+        /* Appelée par CheckRecursive */
+        private void SubRecursive(TreeNode treeNode, TreeNode treeNodeToCheck)
+        {
+            if (treeNode.Text == treeNodeToCheck.Text) { this.tvInputCorrectNodes++; }
+            this.tvInputCorrectNodesGoal++;
+            for (int j = 0; j < treeNode.Nodes.Count; j++)
+            {
+                SubRecursive(treeNode.Nodes[j], treeNodeToCheck.Nodes[j]);
+            }
+        }
+
+        /* Vérifie si les questions sur les ensembles F/O et sur le TreeView sont terminées. Quitte l'application si oui */
+        private void QuestionEnded()
+        {
+            if (!this.bt_ClosedOpenRead.Enabled && !this.bt_sendTvInput.Enabled)
+            {
+                MessageBox.Show("Fin des questions sur Dijkstra !");
+                this.Close();
+            }
+        }
+
+
+        //GetSet
+        public void SetIterationInputGoal(int ite) { this.iteInputGoal = ite; }
+
+        public void SetProfGraphPath(string location) { this.profGraphPath = location; }
+        public void SetProfNumInitial(int numi) { this.profNumInitial = numi; }
+        public void SetProfNumFinal(int numf) { this.profNumFinal = numf; }
+
+        public int GetNote() { return this.note; }
     }
 }

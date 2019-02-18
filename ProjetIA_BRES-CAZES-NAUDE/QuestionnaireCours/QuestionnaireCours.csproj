@@ -55,10 +55,16 @@
     <Compile Include="DijkstraAFormAnswers.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DijkstraAFormAnswers.Designer.cs">
+    <Compile Include="DijkstraAFormAnswers.designer.cs">
       <DependentUpon>DijkstraAFormAnswers.cs</DependentUpon>
     </Compile>
     <Compile Include="GenericNode.cs" />
+    <Compile Include="ProfBypassForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProfBypassForm.designer.cs">
+      <DependentUpon>ProfBypassForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchTree.cs" />
@@ -68,6 +74,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DijkstraAFormAnswers.resx">
       <DependentUpon>DijkstraAFormAnswers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProfBypassForm.resx">
+      <DependentUpon>ProfBypassForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -90,10 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="SujetGraph.txt" />
-    <Content Include="DefaultGraph.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

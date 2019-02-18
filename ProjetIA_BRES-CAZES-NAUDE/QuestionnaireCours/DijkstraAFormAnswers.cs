@@ -28,5 +28,8 @@ namespace QuestionnaireCours
         public void AddLbOuvertsGrapheItem(string item) { lb_OuvertsGraphe.Items.Add(item); }
         public TreeView GetTv() { return tv_DijkstraSolved; }
 
+        public ListBox GetLFermesAnswers() { return this.lb_FermesGraphe; }
+        public ListBox GetLOuvertsAnswers() { return this.lb_OuvertsGraphe; }
+
     }
 }

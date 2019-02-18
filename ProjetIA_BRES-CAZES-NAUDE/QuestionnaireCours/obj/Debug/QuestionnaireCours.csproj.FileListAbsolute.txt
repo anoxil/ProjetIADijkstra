@@ -18,3 +18,14 @@ C:\Users\Raphael\Documents\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\Quest
 C:\Users\Raphael\Documents\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.DijkstraAFormAnswers.resources
 C:\Users\Raphael\Documents\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.Properties.Resources.resources
 C:\Users\Raphael\Documents\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.csproj.GenerateResource.Cache
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\bin\Debug\QuestionnaireCours.exe.config
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.exe
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.pdb
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\bin\Debug\QuestionnaireCours.exe
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\bin\Debug\QuestionnaireCours.pdb
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.csprojResolveAssemblyReference.cache
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.DijkstraAForm.resources
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.DijkstraAFormAnswers.resources
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.Properties.Resources.resources
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.csproj.GenerateResource.Cache
+C:\Users\Raphael\Documents\ENSC\gits\ProjetIADijkstra\ProjetIA_BRES-CAZES-NAUDE\QuestionnaireCours\obj\Debug\QuestionnaireCours.ProfBypassForm.resources
